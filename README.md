@@ -15,3 +15,13 @@ Specific capabilities of Upscaling Toolbox include:
 * tools for fitting constitutive relationships
 * statistical characterization of geologic materials
 * plotting tools 
+
+=======
+
+Use the R package manager to install dependencies from CRAN
+
+install.packages(<packagename>)
+
+* ggplot2
+* mgcv
+* data.table
