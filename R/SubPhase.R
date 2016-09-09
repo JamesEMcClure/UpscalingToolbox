@@ -86,7 +86,7 @@ ExtractSubphase<-function(PATH){
 
 	BSUMS<-NWP.table[,list(vol=sum(vol),pn=sum(pn),awn<-sum(awn),ans<-sum(ans),vnx<-sum(vx),vny<-sum(vy),
 			  vnz<-sum(vz),vsq<-sum(vsq),
-			  Euler=sum(Eulern),pwn<-sum(pwn),count<-sum(count),trJwn<-sum(trJwn)),by='time']
+			  Euler=sum(Euler),pwn<-sum(pwn),count<-sum(count),trJwn<-sum(trJwn)),by='time']
 
 	setnames(BSUMS,c("time","Vn","pn","awn","ans","vnx","vny","vnz","vsq","Euler","pwn","count","trJwn"))
 
