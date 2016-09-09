@@ -106,7 +106,7 @@ ExtractSubphase<-function(PATH){
 	
 	TMP<-merge(BSUMS,WP[,c("time","vol","pw","vx","vy","vz")],by="time")
 
-	BMAX<-BMAX[,c("time","vol","pn","awn","ans","vx","vy","vz","vsq","Eulern","trJwn")]
+	BMAX<-BMAX[,c("time","vol","pn","awn","ans","vx","vy","vz","vsq","Euler","trJwn")]
 	setnames(BMAX,c("time","Vn.c","pn.c","awn.c","ans.c","vnx.c","vny.c","vnz.c","vsq.c","Euler.c","trJwn.c"))
 
 	DATA<-merge(TMP,BMAX,by="time",allow.cartesian=TRUE)
