@@ -1,7 +1,7 @@
 # Functions to read average logs for two-fluid simulations
 
 library(ggplot2)
-library(extrafont)
+#library(extrafont)
 library(reshape2)
 library(pspline)
 

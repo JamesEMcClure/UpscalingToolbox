@@ -113,7 +113,7 @@ ExtractSubphase<-function(PATH){
 
 	# estimate the total volume of the porespace from the data
 	PoreVolume=mean(DATA$vol+DATA$Vn.global)
-	porosity=1.0 - PoreVolume/VOLUME
+	porosity=PoreVolume/VOLUME
 
 	DATA$Vn.d<-DATA$Vn.global-DATA$Vn.c
 	DATA$awn.d<-DATA$awn.global-DATA$awn.c
@@ -130,6 +130,7 @@ ExtractSubphase<-function(PATH){
 	DATA$pwn.d<-DATA$pw-DATA$pn.d
 	DATA$pwn.c<-DATA$pw-DATA$pn.c
 	DATA$pwn.global<-DATA$pw-DATA$pn.global
+	DATA$Source<-PATH
 
 	FILENAME=paste0(PATH,"/blobsum.tcat")	
 	write.table(DATA,file=FILENAME,row.names=FALSE,sep=" ",quote=FALSE)
