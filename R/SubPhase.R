@@ -3,37 +3,6 @@ library(pspline)
 library(reshape2)
 library(data.table)
 
-ReadComponent<-function(FILENAME){
-	DATA<-read.csv(file=FILENAME,head=TRUE,sep=" ")
-
-	# Remove non-sequential rows from WP, DATA (based on time)
-	# (redundant information from restarts)
-	DATA$dt<-append(diff(DATA$time,lag=1),0,after=0)
-	DATA$TAG<-"KEEP"
-	MAXLABEL=0
-	for (i in 1:nrow(DATA)){
-	    #if (DATA$label[i] > MAXLABEL){
-	    #   MAXLABEL=DATA$label[i] 
-	    #}
-	    if (DATA$dt[i]<0){
-	       TIME=DATA$time[i-1]
-	       SKIP=DATA$dt[i]/1000
-	       while(DATA$time[i]<TIME+1000){
-	          #skip these rows
-		  DATA$TAG[i]="DISCARD"
-		  i=i+1
-	       }
-	       # update all ensuing labels so that none are repeated
-	       #for (j in i:nrow(DATA)){
-	       #   DATA$label[j] = DATA$label[j] + MAXLABEL
-	       #}
-	    }
-	}
-	DATA<-subset(DATA,DATA$TAG=="KEEP")
-	return(DATA)	
-}
-
-
 ExtractSubphase<-function(PATH){
 
 	# Read the non-wetting phase component averages	
