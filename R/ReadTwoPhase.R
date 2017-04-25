@@ -35,6 +35,8 @@ ReadTwoPhaseAverages<-function(PATH){
 	NY=Py*Ny
 	NZ=Pz*Nz
 
+	VOLUME=NX*NY*NZ
+
         # Read the time history of averages 
         FILENAME=paste0(PATH,"/timelog.tcat")
         DATA<-read.csv(file=FILENAME,head=TRUE,sep=" ")
@@ -50,6 +52,9 @@ ReadTwoPhaseAverages<-function(PATH){
 	DATA$Fx<-Fx
 	DATA$Fy<-Fy
 	DATA$Fz<-Fz
+
+	DATA$Euler<-DATA$Euler/VOLUME
+	DATA$An<-DATA$An/VOLUME
 	
 	DATA$Source<-PATH
 		

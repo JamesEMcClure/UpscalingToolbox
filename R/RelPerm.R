@@ -12,6 +12,7 @@ ComputeRelPerm<-function(DATA, PERM, POROSITY, D32){
     # retain the assigned sauter mean and porosity
     DATA$D32<-D32
     DATA$Porosity<-POROSITY
+    DATA$D32<-POROSITY*D32/(1-POROSITY)
     
     # LBM force and dimensionless force
     DATA$Fo<-DATA$Fz*D32*D32*D32/(DATA$viscosity*DATA$viscosity)
@@ -37,8 +38,12 @@ ComputeRelPerm<-function(DATA, PERM, POROSITY, D32){
     
     # capillary pressure and phase pressure difference
     DATA$pc<- D32*DATA$trJwn
+    DATA$pcs<-D32/((1/DATA$trJwn)-1.0)
     DATA$pwn<-(DATA$pn-DATA$pw)*D32/DATA$IFT
+    DATA$Rawn<-(2.0/DATA$trJwn)
+    DATA$awnr<-DATA$awn*(DATA$Rawn-2.0)^2/(DATA$Rawn^2)
 
+    DATA$An<-DATA$An*D32
     
     #	RESULT<-DATA[,c("time","sw","pw","pn","awn","ans","aws","Jwn","lwns","vawz",
     #			"vanz","vawnz","vawnsz","Euler","IFT","Image","viscosity",
@@ -77,40 +82,56 @@ RelPerm<-function(PATTERN){
 
 PlotData<-function(Data){
     p<-ggplot()+
-    geom_point(data=Data,aes(x=sw,y=awn*D32,size=log10(Ca),fill=log10(Ca)),shape=21)+
-    scale_fill_distiller(palette="OrRd",trans="reverse",breaks=c(-6,-5,-4,-3,-2,-1,0),name="log(Ca)")+
-    scale_size(breaks=c(-6,-5,-4,-3,-2,-1,0),name="log(Ca)")+
-    guides(fill=guide_legend(),size=guide_legend())+
+    geom_point(data=Data,aes(x=sw,y=awn*D32,shape=Process),size=3)+
+    geom_line(data=Data,aes(x=sw,y=awn*D32,linetype=Process))+
     scale_x_continuous(limits=c(0,1))+
     xlab(expression(s^{bar(bar(w))})) +
-    ylab(expression(epsilon^{bar(bar(wn))}~D))
+    ylab(expression(epsilon^{bar(bar(wn))}~D))+
+    theme_bw()+theme(panel.grid.major = element_blank(),panel.grid.minor = element_blank())
 
-    #	xlab(sw)+ylab(awn)
 
     ggsave("awn-sw-Ca.pdf",p,width=6.5,height=4.5)
 
     p<-ggplot()+
     xlab(expression(s^{bar(bar(w))})) + ylab("Relative Permeability") +
-    geom_point(data=Data,aes(x=sw,y=knr,colour="Oil"),shape=20,size=3) +
-    geom_point(data=Data,aes(x=sw,y=kwr,colour="Water"),shape=20,size=3) +
+    geom_point(data=Data,aes(x=sw,y=knr,colour="Oil",shape=Process),size=3) +
+    geom_point(data=Data,aes(x=sw,y=kwr,colour="Water",shape=Process),size=3) +
+    geom_line(data=Data,aes(x=sw,y=knr,linetype=Process,colour="Oil")) +
+    geom_line(data=Data,aes(x=sw,y=kwr,linetype=Process,colour="Water")) +
     scale_x_continuous(limits=c(0,1))+
+    theme_bw()+theme(panel.grid.major = element_blank(),panel.grid.minor = element_blank())+
     scale_colour_manual(name="Fluid",values=c("#FF3300","#3399FF"))
 
     ggsave("RelPerm.pdf",p,width=6.5,height=4.5)
 
     p<-ggplot()+
-    geom_point(data=Data,aes(x=sw,y=Euler*(D32)^3))+
+    geom_point(data=Data,aes(x=sw,y=Euler*(D32)^3,shape=Process),size=3)+
+    geom_line(data=Data,aes(x=sw,y=Euler*D32^3,linetype=Process))+
     xlab(expression(s^{bar(bar(w))})) +
     ylab(expression(chi[n]~D^3))+
+    theme_bw()+theme(panel.grid.major = element_blank(),panel.grid.minor = element_blank())+
     scale_x_continuous(limits=c(0,1))
+
     ggsave("Euler-sw.pdf",p,width=6.5,height=4.5)
 
     p<-ggplot()+
-    geom_point(data=Data,aes(x=sw,y=pwn),shape=21)+
+    geom_point(data=Data,aes(x=sw,y=pwn,shape=Process),size=3)+
+    geom_line(data=Data,aes(x=sw,y=pwn,linetype=Process))+
     scale_x_continuous(limits=c(0,1))+
+    theme_bw()+theme(panel.grid.major = element_blank(),panel.grid.minor = element_blank())+
     xlab(expression(s^{bar(bar(w))})) +
     ylab(expression(p[n]~-~p[w]~paste(")")~D~paste("/")~gamma[wn]))
 
-    ggsave("pwn-sw-Ca.pdf",p,width=6.5,height=4.5)
+    ggsave("pwn-sw.pdf",p,width=6.5,height=4.5)
+
+    p<-ggplot()+
+    geom_point(data=Data,aes(x=sw,y=pc,shape=Process),size=3)+
+    geom_line(data=Data,aes(x=sw,y=pc,linetype=Process))+
+    scale_x_continuous(limits=c(0,1))+
+    theme_bw()+theme(panel.grid.major = element_blank(),panel.grid.minor = element_blank())+
+    xlab(expression(s^{bar(bar(w))})) +
+    ylab(expression(J[w]^{wn}~paste(")")~D))
+
+    ggsave("pc-sw.pdf",p,width=6.5,height=4.5)
 
 }
