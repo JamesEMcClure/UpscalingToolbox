@@ -25,3 +25,4 @@ install.packages(<packagename>)
 * ggplot2
 * mgcv
 * data.table
+* pspline
