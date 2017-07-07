@@ -10,10 +10,10 @@ ComputeRelPerm<-function(DATA, PERM, POROSITY, D32){
     DATA<-tail(DATA,1)
     
     # retain the assigned sauter mean and porosity
+#    D32<-POROSITY*D32/(1-POROSITY)
+ #   PERM<-PERM*(1-POROSITY/POROSITY)^2
     DATA$D32<-D32
     DATA$Porosity<-POROSITY
-    DATA$D32<-POROSITY*D32/(1-POROSITY)
-    
     # LBM force and dimensionless force
     DATA$Fo<-DATA$Fz*D32*D32*D32/(DATA$viscosity*DATA$viscosity)
     
