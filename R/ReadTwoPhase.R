@@ -15,11 +15,15 @@ ReadTwoPhaseAverages<-function(PATH){
         # Read the input parameters
         FILENAME=paste0(PATH,"/Color.in")
         PRM<-scan(file=FILENAME)        
-        IFT<-PRM[2]*5.796
+        IFT<-PRM[5]*5.796
         VISC<-(PRM[1]-0.5)/3
-        Fx<-PRM[6]
-        Fy<-PRM[7]
-        Fz<-PRM[8]
+        NU1<-(PRM[1]-0.5)/3
+        NU2<-(PRM[2]-0.5)/3
+        RHO1<-PRM[3]
+        RHO2<-PRM[4]
+        Fx<-PRM[7]
+        Fy<-PRM[8]
+        Fz<-PRM[9]
 	PI=3.14159265358979
 
         FILENAME=paste0(PATH,"/Domain.in")
